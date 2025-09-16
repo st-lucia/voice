@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>■歌のサンプル</title>
+  <style>
+    body {
+      font-family: 'ＭＳ 明朝', serif;
+      font-size: 18px;
+      margin: 2em;
+    }
+    a {
+      color: blue;
+      text-decoration: underline;
+    }
+    .note {
+      font-size: 12px;
+      color: #555;
+    }
+    .divider {
+      margin-top: 2em;
+      color: #888;
+    }
+  </style>
+  <!-- User Heat Tag -->
+  <script type="text/javascript">
+    (function(add, cla){window['UserHeatTag']=cla;window[cla]=window[cla]||function(){(window[cla].q=window[cla].q||[]).push(arguments)},window[cla].l=1*new Date();var ul=document.createElement('script');var tag = document.getElementsByTagName('script')[0];ul.async=1;ul.src=add;tag.parentNode.insertBefore(ul,tag);})("//uh.nakanohito.jp/uhj2/uh.js", "_uhtracker");_uhtracker({id:'uhDsnNbFm1'});
+  </script>
+  <!-- End User Heat Tag -->
+</head>
+<body>
+  <h1>■歌のサンプル</h1>
+  <p class="note">※（ ）内は原曲の歌手です。※音程の補正はしていません。</p>
+  <ol>
+    <li>叙情詩（<a href="/voice/demo/jojoushi.mp3">L’Arc-en-Ciel</a>）</li>
+    <li>Squall（<a href="/voice/demo/squall.mp3">福山雅治</a>）</li>
+    <li>君をのせて 天空の城ラピュタ（<a href="/voice/demo/kimiwonosete.mp3">井上あずみ</a>）</li>
+    <li>時の過ぎゆくままに（<a href="/voice/demo/tokinosugiyukumamani.mp3">沢田研二</a>）</li>
+    <li>ルビーの指環（<a href="/voice/demo/ruby.mp3">寺尾聰</a>）</li>
+    <li>結詞（<a href="/voice/demo/musubiuta.mp3">井上陽水</a>）</li>
+    <li>Winter Song（<a href="/voice/demo/wintersong.mp3">DREAMS COME TRUE</a>）</li>
+    <li>WHITE BREATH（<a href="/voice/demo/whitebreath_cut.mp3">T.M.Revolution</a>）※サビのみ</li><br>
+
+    <li>赤い靴（<a href="/voice/demo/akaikutsu.mp3">童謡</a>）</li>
+    <li>ちいさい秋みつけた（<a href="/voice/demo/chiisaiaki.mp3">合唱、カバーなど多数</a>）</li>
+    <li>Black Cherry（<a href="/voice/demo/blackcherry.mp3">Acid Black Cherry</a>）</li>
+  </ol>
+  <div class="divider">－－－－－－－－</div>
+</div>
+  <div id="counter" style="margin-top:2em; color:#555; font-size:14px;"></div>
+  <script>
+    // 管理者だけにカウンター・履歴を表示
+    function isAdmin() {
+      return location.search.includes('admin=1');
+    }
+    // カウンターと履歴の保存
+    const key = 'simple_page_counter';
+    const logKey = 'simple_page_log';
+    let count = localStorage.getItem(key);
+    if (!count) count = 0;
+    count = parseInt(count, 10) + 1;
+    localStorage.setItem(key, count);
+    // 履歴保存
+    let log = [];
+    try {
+      log = JSON.parse(localStorage.getItem(logKey)) || [];
+    } catch(e) { log = []; }
+    const now = new Date();
+    log.unshift(now.toLocaleString());
+    if (log.length > 20) log = log.slice(0, 20);
+    localStorage.setItem(logKey, JSON.stringify(log));
+    // 管理者だけ表示
+    if (isAdmin()) {
+      let html = `あなたのこの端末での訪問回数: ${count}`;
+      html += '<br>最近のアクセス日時:<ul style="font-size:12px;">';
+      for (const t of log) html += `<li>${t}</li>`;
+      html += '</ul>';
+      document.getElementById('counter').innerHTML = html;
+    } else {
+      document.getElementById('counter').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
