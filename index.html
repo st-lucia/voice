@@ -305,22 +305,36 @@ mso-hansi-font-family:Century'>－－－－－－－－</span></p>
     // カウンターと履歴の保存
     const key = 'simple_page_counter';
     const logKey = 'simple_page_log';
+    const lastKey = 'simple_page_last';
     let count = localStorage.getItem(key);
     if (!count) count = 0;
-    count = parseInt(count, 10) + 1;
-    localStorage.setItem(key, count);
+    // 4時間に1回だけカウントアップ
+    let last = localStorage.getItem(lastKey);
+    let now = new Date();
+    let doCount = true;
+    if (last) {
+      let lastDate = new Date(last);
+      let diff = now - lastDate;
+      if (diff < 4 * 60 * 60 * 1000) doCount = false; // 4時間未満ならカウントしない
+    }
+    if (doCount) {
+      count = parseInt(count, 10) + 1;
+      localStorage.setItem(key, count);
+      localStorage.setItem(lastKey, now.toISOString());
+    }
     // 履歴保存
     let log = [];
     try {
       log = JSON.parse(localStorage.getItem(logKey)) || [];
     } catch(e) { log = []; }
-    const now = new Date();
-    log.unshift(now.toLocaleString());
-    if (log.length > 20) log = log.slice(0, 20);
+    if (doCount) {
+      log.unshift(now.toLocaleString());
+    }
+    if (log.length > 50) log = log.slice(0, 50);
     localStorage.setItem(logKey, JSON.stringify(log));
     // 管理者だけ表示
     if (isAdmin()) {
-      let html = `あなたのこの端末での訪問回数: ${count}`;
+      let html = `訪問回数: ${count}`;
       html += '<br>最近のアクセス日時:<ul style="font-size:12px;">';
       for (const t of log) html += `<li>${t}</li>`;
       html += '</ul>';
